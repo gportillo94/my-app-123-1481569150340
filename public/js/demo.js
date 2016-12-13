@@ -43,7 +43,10 @@ $(document).ready(function() {
     $errorMsg  = $('.errorMsg'),
     $traits    = $('.traits'),
     $results   = $('.results'),
-    $captcha   = $('.captcha');
+    $captcha   = $('.captcha'),
+    $selftraits= $('.self-traits'),
+    $seldbadtraits = $('.self-badtraits'), 
+    $badtraits = $('.badtraits') ; 
 
   /**
    * Clear the "textArea"
@@ -88,6 +91,7 @@ $(document).ready(function() {
     $captcha.hide();
     $error.hide();
     $traits.hide();
+    $badtraits.hide() ; 
     $results.hide();
 
     $.ajax({
@@ -109,9 +113,12 @@ $(document).ready(function() {
           showError(response.error);
         } else {
           $results.show();
-          showTraits(response);
-          showTextSummary(response);
-          showVizualization(response);
+          showOtherTraits(response.others); 
+          showSelfTraits(response.self); 
+          //showTraits(response.others, "");
+          //showTraits(response.self, "self-")
+          //showTextSummary(response);
+          //showVizualization(response);
         }
 
       },
@@ -146,53 +153,97 @@ $(document).ready(function() {
     $errorMsg.text(error || defaultErrorMsg);
   }
 
-  /**
-   * Displays the traits received from the
-   * Personality Insights API in a table,
-   * just trait names and values.
-   */
-  function showTraits(data) {
-    console.log('showTraits()');
-    $traits.show();
 
-    var traitList = flatten(data.tree),
-      table = $traits;
+  function showTrait (elem , table, property){
+        console.log(elem) ; 
+        var Klass = 'row';
+        Klass += (elem.title) ? ' model_title' : ' model_trait';
+        Klass += (elem.value === '') ? ' model_name' : '';
 
-    table.empty();
-
-    // Header
-    $('#header-template').clone().appendTo(table);
-
-    // For each trait
-    for (var i = 0; i < traitList.length; i++) {
-      var elem = traitList[i];
-
-      var Klass = 'row';
-      Klass += (elem.title) ? ' model_title' : ' model_trait';
-      Klass += (elem.value === '') ? ' model_name' : '';
-
-      if (elem.value !== '') { // Trait child name
-        $('#trait-template').clone()
+        if (elem.value !== '') { // Trait child name
+          $('#'+property+'trait-template').clone()
           .attr('class', Klass)
           .find('.tname')
           .find('span').html(elem.id).end()
           .end()
           .find('.tvalue')
-            .find('span').html(elem.value === '' ?  '' : elem.value)
-            .end()
+          .find('span').html(elem.value === '' ?  '' : elem.value)
+          .end()
           .end()
           .appendTo(table);
-      } else {
-        // Model name
-        $('#model-template').clone()
+        } else {
+          // Model name
+          $('#model-template').clone()
           .attr('class', Klass)
           .find('.col-lg-12')
           .find('span').html(elem.id).end()
           .end()
           .appendTo(table);
-      }
-    }
+        }
   }
+
+  /**
+   * Displays the traits received from the
+   * Personality Insights API in a table,
+   * just trait names and values.
+   */
+
+function filterTraits (traitList , table , badtable, property) {
+  for (var i = 0; i < traitList.length; i++) {
+    var elem = traitList[i];
+    if (elem.id === "Dutifulness" || elem.id === "Orderliness" || elem.id === "Self-discipline" ||  elem.id === "Stability" || elem.id === "Cautiousness")
+      showTrait(elem , table, property) ; 
+    else if (elem.id === "Uncompromising" || elem.id === "Immoderation" || elem.id === "Hedonism")
+      showTrait(elem,badtable, property) ; 
+  }
+}
+function showOtherTraits (data){
+  $traits.show();
+  $badtraits.show() ; 
+  var traitList = flatten(data.tree); 
+  var table = $traits;
+  var badtable = $badtraits ; 
+  table.empty();
+  badtable.empty() ; 
+  filterTraits (traitList , table , badtable, "") ; 
+
+}
+function showSelfTraits (data){
+  $selftraits.show() ; 
+  $seldbadtraits.show() ; 
+  var traitList = flatten(data.tree); 
+  var table = $selftraits ; 
+  var badtable = $seldbadtraits ;
+  table.empty();
+  badtable.empty() ; 
+  filterTraits (traitList , table , badtable, "self-") ; 
+
+}
+
+function showTraits(data,property) {
+  console.log('showTraits()');
+  $traits.show();
+  $badtraits.show() ; 
+
+  var traitList = flatten(data.tree); 
+  var table = $traits;
+  var badtable = $badtraits ; 
+
+  table.empty();
+  badtable.empty() ; 
+
+  // Header
+  //$('#header-template').clone().appendTo(table);
+
+  // For each trait
+  for (var i = 0; i < traitList.length; i++) {
+    var elem = traitList[i];
+    if (elem.id === "Dutifulness" || elem.id === "Orderliness" || elem.id === "Self-discipline" ||  elem.id === "Stability" || elem.id === "Cautiousness")
+      showTrait(elem , table, property) ; 
+    else if (elem.id === "Uncompromising" || elem.id === "Immoderation" || elem.id === "Hedonism")
+      showTrait(elem,badtable, property) ; 
+  }
+}
 
   /**
    * Construct a text representation for big5 traits crossing, facets and

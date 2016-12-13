@@ -61,6 +61,7 @@
             </div>
           </div>
         </div>
+        <!--
         <div style="display: none;" class="results">
           <h2>Your Personality*</h2>
           <div class="well">
@@ -73,20 +74,31 @@
             </div>
           </div>
         </div>
+        -->
       </div>
       <div style="display: none;" class="results">
         <div class="row">
           <div class="col-lg-5 col-md-12 col-xs-12">
             <h3>Data Behind Your Personality</h3>
+            <h4>Others</h4>
             <div style="display: none;" class="col555px well traits"></div>
+            <div style="display: none;" class="col555px well badtraits"></div>
+            <h4>Self</h4>
+            <div style="display: none;" class="col555px well self-traits"></div>
+            <div style="display: none;" class="col555px well self-badtraits"></div>
           </div>
+          <!--
           <div class="col-lg-7 col-xs-12 col-md-12">
             <h3>Visualization of Personality Data</h3>
             <div id="vizcontainer" class="well"></div>
           </div>
+          -->
         </div>
       </div>
-      <div class="hidden">
+
+      
+      <div class="hidden">  
+        <!--
         <div id="header-template">
           <div class="row theader">
             <div class="col-lg-7 col-xs-7">
@@ -97,6 +109,8 @@
             </div>
           </div>
         </div>
+        -->
+        
         <div id="trait-template">
           <div class="row">
             <div class="tname col-lg-7 col-xs-7">
@@ -107,6 +121,19 @@
             </div>
           </div>
         </div>
+
+        <div id="self-trait-template">
+          <div class="row">
+            <div class="tname col-lg-7 col-xs-7">
+              <span></span>
+            </div>
+            <div class="tvalue col-lg-5 col-xs-5 text-right">
+              <span></span>
+            </div>
+          </div>
+        </div>
+        
+        <!--
         <div id="model-template">
           <div class="row">
             <div class="col-lg-12 col-xs-12 text-center">
@@ -114,9 +141,11 @@
             </div>
           </div>
         </div>
+        -->
       </div>
     </div>
   </div>
+
   <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/2.10.0/d3.v2.min.js"></script>
   <script type="text/javascript" src="/js/demo.js"></script>

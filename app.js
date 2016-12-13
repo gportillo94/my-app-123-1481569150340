@@ -30,7 +30,6 @@ var personalityInsights = watson.personality_insights({
 
 });
 
-/*****************************************************************************/
 function insightRequest(path, query, done) {
     console.log(insight_host); 
     request({
@@ -40,7 +39,7 @@ function insightRequest(path, query, done) {
             q: query,
             size: MAX_TWEETS
         }
-    }, function(err, response, data) {
+    },function(err, response, data) {
         if (err) {
             done(err);
         } else {
@@ -66,7 +65,6 @@ function insightRequest(path, query, done) {
         }
     });
 }
-/*****************************************************************************/
 
 app.get('/', function(req, res) {
   res.render('index', { ct: req._csrfToken });
@@ -74,54 +72,95 @@ app.get('/', function(req, res) {
 
 app.post('/api/profile', function(req, res, next) {
 
-    console.log(req.body.text); 
+    var obj = {} ; 
+    var ret1 = [] ; 
+    var ret2 = [] ; 
+    var self_twitts , others_twitts ; 
 
+    insightRequest("/search", req.body.text, function(err1, others_data) {
+        if (err1) {
+            res.send(err1).status(400);
+        } 
+        else {
+            var query = "from:"+req.body.text; 
+            insightRequest("/search", query, function(err2, self_data) {
+                if (err2) {
+                    res.send(err2).status(400);
+                } 
+                else {
+
+                    for (var i =0 ; i <others_data.tweets.length ; i++)
+                        ret1.push(others_data.tweets[i].message.body); 
+                    others_twitts = ret1.join("."); 
+
+                    for (var i =0 ; i <self_data.tweets.length ; i++)
+                        ret2.push(self_data.tweets[i].message.body); 
+                    self_twitts = ret2.join("."); 
+
+                    req.body.text = others_twitts ; 
+                    var parameters = extend(req.body, { acceptLanguage : i18n.lng() }); console.log("console.log(parameters)") ; console.log(parameters); 
+
+                    personalityInsights.profile(parameters, function(err, profile) {
+                        if (err)
+                            return next(err);
+                        else
+                        {
+
+                            obj.others = profile ; 
+                            req.body.text = self_twitts ; 
+                            var parameters = extend(req.body, { acceptLanguage : i18n.lng() }); console.log("console.log(parameters)") ; console.log(parameters); 
+
+                            personalityInsights.profile(parameters, function(err, profile) {
+                                if (err)
+                                    return next(err);
+                                else
+                                {
+                                    obj.self = profile ; 
+                                    return res.json(obj);
+                                }
+                            });
+                            //return res.json(obj);
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+
+    /*
+    console.log("console.log(req.body.text)") ; 
+    console.log(req.body.text); 
     var ret = [] ; 
     var twitts ; 
+    var obj = {} ; 
 
-    twitts =  insightRequest("/search", req.body.text, function(err, data) {
+    insightRequest("/search", req.body.text, function(err, data) {
         if (err) {
-            console.log("if"); 
             res.send(err).status(400);
         } 
-        else 
-        {
-            console.log("else"); 
-            //var ret = []; 
+        else {
             for (var i =0 ; i <data.tweets.length ; i++)
                 ret.push(data.tweets[i].message.body); 
             twitts = ret.join("."); 
 
-           // console.log(twitts);
-
             req.body.text = twitts ; 
-
-            var parameters = extend(req.body, { acceptLanguage : i18n.lng() });
-
-            console.log("console.log(req.body)"); 
-            console.log(req.body);
-            console.log("console.log(parameters)") ; 
-            console.log(parameters); 
+            var parameters = extend(req.body, { acceptLanguage : i18n.lng() }); console.log("console.log(parameters)") ; console.log(parameters); 
 
             personalityInsights.profile(parameters, function(err, profile) {
-              if (err)
-                return next(err);
-              else
-              {
-                //console.log("console.log(profile)");   
-                //console.log(profile); 
-                return res.json(profile);
-              }
+                if (err)
+                    return next(err);
+                else
+                {
+
+                    obj.others = profile ; 
+                    return res.json(obj);
+                }
             });
         }
     });
-
-
-/*
-
-
-*/
-});
+    */
 
 //require('./config/error-handler')(app);
 
