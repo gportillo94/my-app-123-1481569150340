@@ -6,7 +6,7 @@ var express    = require('express'),
   extend       = require('util')._extend,
   i18n         = require('i18next');
 
-const MAX_TWEETS = 250 ; 
+const MAX_TWEETS = 500 ; 
 var request = require('request'); 
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 
@@ -127,42 +127,6 @@ app.post('/api/profile', function(req, res, next) {
         }
     });
 });
-
-
-    /*
-    console.log("console.log(req.body.text)") ; 
-    console.log(req.body.text); 
-    var ret = [] ; 
-    var twitts ; 
-    var obj = {} ; 
-
-    insightRequest("/search", req.body.text, function(err, data) {
-        if (err) {
-            res.send(err).status(400);
-        } 
-        else {
-            for (var i =0 ; i <data.tweets.length ; i++)
-                ret.push(data.tweets[i].message.body); 
-            twitts = ret.join("."); 
-
-            req.body.text = twitts ; 
-            var parameters = extend(req.body, { acceptLanguage : i18n.lng() }); console.log("console.log(parameters)") ; console.log(parameters); 
-
-            personalityInsights.profile(parameters, function(err, profile) {
-                if (err)
-                    return next(err);
-                else
-                {
-
-                    obj.others = profile ; 
-                    return res.json(obj);
-                }
-            });
-        }
-    });
-    */
-
-//require('./config/error-handler')(app);
 
 var port = process.env.VCAP_APP_PORT ||  3000;
 app.listen(port);
