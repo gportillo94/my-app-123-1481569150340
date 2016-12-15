@@ -6,7 +6,7 @@ var express    = require('express'),
   extend       = require('util')._extend,
   i18n         = require('i18next');
 
-const MAX_TWEETS = 500 ; 
+const MAX_TWEETS = 250 ; 
 var request = require('request'); 
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 

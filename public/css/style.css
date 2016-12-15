@@ -1,10 +1,35 @@
-#trait-template{
-	color: blue ;
+body {
+	min-width: 550px ; 
+	font-family: Arial ; 
 }
-#self-trait-template{
-	color: red; 
+h3 {
+	color: grey  ; 
 }
-.results{
-	border-color: black  
-	border-width : 2px;
+body .container{
+	max-width: 550px ;
+	margin : auto ; 
+}
+.well {
+  text-align: center ; 
+}
+.sample-radio-container{
+	display: inline-flex
+}
+.loading {
+	text-align: center ; 
+}
+.results {
+	text-align: center ;  
+}
+.self {
+	float: left ; 
+}
+.badtraits {
+	color: red ; 
+}
+.others {
+	float: right ; 
+}
+.self-badtraits {
+	color: red ; 
 }
