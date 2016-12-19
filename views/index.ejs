@@ -18,8 +18,10 @@
   <div class="init-text">
     <h1>IBM Bluemix</h1>
     <h3>Personality Insights &amp; Insights for Twitter</h3>
-    <p>This application asdiuvhbdrisufh iseuhdvgdoshfesuifhs uigsdgvhsiuhfdsiyfd usdivugsdvidsv
-    sdvfbsfbs sdgdffsgg srgdhfdg </p>
+    <hr>
+    <p>This application delivers a simple analysis of your personality given your twitts (based on your own and also your @ mentions in twitter), 
+    we take the top most and the lowest most personality characteristics and deliver a description based on them.</p>
+	<p>The idea behind this is to “help” a finance institution representative to make decisions about your qualifications, in terms of personality, to be eligible for a loan.</p>
   </div>
 
   <div class="container">
@@ -28,7 +30,8 @@
         <div class="well">
           <div class="form-group row">
             <div style="padding:0px;" class="col-lg-12 col-xs-12">
-              <label class="col-lg-6 col-md-6 col-xs-6 control-label">Choose Language:</label>
+              <label class="col-lg-6 col-md-6 col-xs-6 control-label">Please Choose Language (language in which you twitt most):</label>
+              <br><br>
               <div class="col-lg-6 col-md-6 col-xs-6 sample-radio-list">
                 <div class="sample-radio-container">
                   <label>
@@ -46,6 +49,7 @@
               <textarea rows="1" required="true" name="text" class="content form-control"></textarea>
             </div>
           </div>
+
           <div class="form-group row buttons-container">
             <div class="col-lg-4 col-xs-4">
               <button type="button" class="btn btn-block clear-btn">Clear</button>
@@ -55,7 +59,9 @@
             </div>
           </div>
         </div>
+   
       </div>
+
       <div class="col-lg-6 col-md-12 col-xs-12">
         <div style="display:none;" class="form-group row loading text-center loading">
           <h2>&nbsp;</h2>
@@ -87,13 +93,13 @@
             <h3>Data Behind Your Personality</h3>
             
             <div class="others">
-              <h4>Others</h4>
+              <h4>How Others see you</h4>
               <div style="display: none;" class="col555px well traits"></div>
               <div style="display: none;" class="col555px well badtraits"></div>
             </div>
             
             <div class="self">
-              <h4>Self</h4>
+              <h4>This is based in your own content</h4>
               <div style="display: none;" class="col555px well self-traits"></div>
               <div style="display: none;" class="col555px well self-badtraits"></div>
             </div>
